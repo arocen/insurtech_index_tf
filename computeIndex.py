@@ -1,0 +1,1 @@
+# compute index per year per company based on matrix
