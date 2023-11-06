@@ -1,7 +1,6 @@
 # get co-occurrence matrix of Insurtech keywords and company names
 
 import os
-import pandas as pd
 from dotenv import load_dotenv
 import re
 import jieba
@@ -106,6 +105,17 @@ def test_split_into_sentences():
     return output
 
 
+def split_into_paragraphs(splitted_docs:list[str])->list[str]:
+    '''将文档切分为段落'''
+
+    para_list = []
+    for doc in splitted_docs:
+        paras = doc.split("\n\n")
+        paras_drop_empty = list(filter(None, paras)) # drop empty strings from list
+        para_list.extend(paras_drop_empty)
+    return para_list
+
+
 
 def cut(sentences:list[str], my_dict_path:str=os.environ.get('my_dict_path'))->list[str]:
     '''
@@ -135,6 +145,7 @@ def save_sentences(cut_sentences:list[str], cut_sentences_path=os.environ.get('c
     except:
         print(f"Error saving cut_sentences to {cut_sentences_path}")
     return
+
 
 # test_load_uselessText()
 # slist = test_split_into_sentences()
