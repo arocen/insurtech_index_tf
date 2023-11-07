@@ -7,6 +7,9 @@ import os
 # load .env file
 load_dotenv()
 
+doc_folder_path = os.environ.get('doc_folder_path')
+cut_sentences_by_year_folder = os.environ.get('cut_sentences_by_year_folder')
+
 def testSentences():
     docs_by_year = pr.load_doc()
     cleaned_docs_by_year = pr.remove_nonsense(docs_by_year)
@@ -39,5 +42,29 @@ def testParagraphs():
     pr.save_sentences(cut_paragraphs, cut_sentences_path=os.environ.get("cut_paragraphs_path"))
     return
 
+
+def testSentencesByYear():
+    docs_by_year = pr.load_doc()
+    filenames = sorted([f for f in os.listdir(doc_folder_path) if f.endswith(".txt")])
+    years = [filename[:4] for filename in filenames]
+    save_names = [year + "_cut.txt" for year in years]
+    save_paths = [os.path.join(cut_sentences_by_year_folder, save_name) for save_name in save_names]
+    
+    cleaned_docs_by_year = pr.remove_nonsense(docs_by_year)
+    new_cleaned_docs_by_year = pr.remove_href(cleaned_docs_by_year)
+
+    # list of lists
+    splittedDocsByYear = pr.split_docs_by_year(new_cleaned_docs_by_year)
+    cutSentencesByYear = []
+    
+    for docs, save_path in zip(splittedDocsByYear, save_paths):
+        sentences = pr.split_into_sentences(docs)
+        cut_sentences = pr.cut(sentences)
+        cutSentencesByYear.append(cut_sentences)
+
+        # save by year        
+        pr.save_sentences(cut_sentences, save_path)
+
 # testParagraphs()
-testSentences()
+# testSentences()
+testSentencesByYear()

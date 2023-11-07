@@ -75,6 +75,21 @@ def split_docs(docs_by_year:list[str], split_pattern:str=os.environ.get('split_p
 
     return splitted_docs
 
+def split_docs_by_year(docs_by_year:list[str], split_pattern:str=os.environ.get('split_pattern'))->list[list[str]]:
+    '''
+    切分每个年度内的文档
+    返回一个列表，其中每一个元素为一个列表，表示一个年度内的所有文档
+
+    split_pattern: 用于文档切分的pattern
+    '''
+    splittedDocsByYear = []
+    for docs in docs_by_year:
+        doc_list = re.split(split_pattern, docs)
+        doc_list = doc_list[:-1]    # remove the last part
+        splittedDocsByYear.append(doc_list)  # use append instead of extend
+    return splittedDocsByYear
+
+
 
 def split_into_sentences(splitted_docs:list[str])->list[str]:
     '''
