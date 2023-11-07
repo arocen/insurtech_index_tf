@@ -17,3 +17,5 @@ def getIndex(matrix_list:list[pd.DataFrame], years:list[str], company_names:list
         index = sumTfPerCompany(matrix)
         results.loc[year] = index
     return results
+
+# Is it reasonable to divide index per year by total number of terms?

@@ -30,13 +30,13 @@ def testGetIndex():
     matrices = gm.get_multi_matrices(keywords, company_names, matrix, corpus_list)
     
     # show count result
-    for m in matrices:
-        print(m)
+    # for m in matrices:
+    #     print(m)
 
     years = pr.getYearFromFilename()
     indexByYear = ci.getIndex(matrices, years, company_names)
     print(indexByYear)
-    return
+    return indexByYear
 
 
 # testSum()
