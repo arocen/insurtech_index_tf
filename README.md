@@ -7,6 +7,4 @@ corpus: news about InsurTech
 3. Assign weights
 4. Calculate InsurTech Index by year and company
 
-To-do:
-分年度读取语料
-分年度绘图
+Question: Should we divide indices with number of total words of each year? How about number of reports of each year?
