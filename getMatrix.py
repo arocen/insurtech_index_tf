@@ -56,5 +56,6 @@ def get_multi_matrices(keywords:list[str], company_names:list[str], matrix:pd.Da
     for corpus in corpus_list:
         count_result = count_co_occur(keywords, company_names, matrix, corpus)
         matrices.append(count_result.copy())    # use .copy() to avoid mutablity of count_result within loop
+        matrix = init_matrix(keywords, company_names) # reset count of matrix to zero
 
     return matrices

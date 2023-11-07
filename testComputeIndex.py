@@ -40,4 +40,4 @@ def testGetIndex():
 
 
 # testSum()
-# testGetIndex()
+testGetIndex()
