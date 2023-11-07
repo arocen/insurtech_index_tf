@@ -146,6 +146,15 @@ def save_sentences(cut_sentences:list[str], cut_sentences_path=os.environ.get('c
         print(f"Error saving cut_sentences to {cut_sentences_path}")
     return
 
+# not tested
+def load_saved_preprocessed_corpus(path):
+    '''加载保存的分词后的分段或者分句语料，逐行读取到列表，去除空字符串'''
+    corpus = []
+    with open(path, "r", encoding="utf-8") as f:
+        corpus = f.readlines()
+        corpus = list(filter(None, corpus))
+    return corpus
+
 
 # test_load_uselessText()
 # slist = test_split_into_sentences()
