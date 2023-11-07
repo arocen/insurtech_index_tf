@@ -39,4 +39,5 @@ def testParagraphs():
     pr.save_sentences(cut_paragraphs, cut_sentences_path=os.environ.get("cut_paragraphs_path"))
     return
 
-testParagraphs()
+# testParagraphs()
+testSentences()
