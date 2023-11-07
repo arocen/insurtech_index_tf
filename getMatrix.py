@@ -18,7 +18,7 @@ def load_words(path:str)->list:
 
 def init_matrix(keywords:list[str], company_names:list[str])->pd.DataFrame:
     '''initialize 0 values matrix from collected words and company names'''
-    matrix = pd.DataFrame(0, index=company_names, columns=keywords)
+    matrix = pd.DataFrame(0, index=keywords, columns=company_names)
     return matrix
 
 
@@ -26,7 +26,7 @@ def count_co_occur(keywords:list[str], company_names:list[str], matrix:pd.DataFr
     '''
     iterate every sentence and count co-occurrence
     count co-occurrence in each element of corpus
-    company_names are row labels of matrix, keywords are column labels
+    company_names are column labels of matrix, keywords are row labels
     '''
     for text in corpus:
         wlist = text.split(" ")
@@ -35,7 +35,7 @@ def count_co_occur(keywords:list[str], company_names:list[str], matrix:pd.DataFr
                 for keyword in keywords:
                     if keyword in wlist:
                         count = wlist.count(keyword)
-                        matrix.at[name, keyword] += count
+                        matrix.at[keyword, name] += count
                     else:
                         continue
             else:
