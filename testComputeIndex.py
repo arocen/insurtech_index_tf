@@ -38,6 +38,25 @@ def testGetIndex():
     print(indexByYear)
     return indexByYear
 
+def testDivide():
+    keywords = gm.load_words(keywords_path)
+    company_names = gm.load_words(company_names_path)
+    matrix = gm.init_matrix(keywords, company_names)
+    corpus_list = pr.load_preprocessed_multi_corpus()
+    matrices = gm.get_multi_matrices(keywords, company_names, matrix, corpus_list)
+    years = pr.getYearFromFilename()
+    indexByYear = ci.getIndex(matrices, years, company_names)
+    print(indexByYear)
+
+    countWords = ci.countWords(corpus_list, years)
+    print(countWords)
+    weights = ci.weightFromCountWords(countWords)
+    print(weights)
+    newIndices = ci.divideByWordNum(indexByYear, weights)
+    print(newIndices)
+    return newIndices
+
 
 # testSum()
-testGetIndex()
+# testGetIndex()
+testDivide()
