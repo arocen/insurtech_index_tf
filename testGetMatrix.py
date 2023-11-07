@@ -39,4 +39,4 @@ def test_count_co_occur():
 
 # test_load_words()
 # test_init_matrix()
-test_count_co_occur()
+# test_count_co_occur()

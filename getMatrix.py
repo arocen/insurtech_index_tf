@@ -22,7 +22,7 @@ def init_matrix(keywords:list[str], company_names:list[str])->pd.DataFrame:
     return matrix
 
 
-def count_co_occur(keywords:list[str], company_names:list[str], matrix:pd.DataFrame, corpus:list[str], save_path:str)->pd.DataFrame:
+def count_co_occur(keywords:list[str], company_names:list[str], matrix:pd.DataFrame, corpus:list[str])->pd.DataFrame:
     '''
     iterate every sentence and count co-occurrence
     count co-occurrence in each element of corpus
@@ -41,7 +41,6 @@ def count_co_occur(keywords:list[str], company_names:list[str], matrix:pd.DataFr
             else:
                 continue
     
-    save_matrix(matrix, save_path)
     return matrix
 
 
@@ -49,3 +48,13 @@ def save_matrix(matrix:pd.DataFrame, save_path:str):
     '''save matrix to Excel'''
     matrix.to_excel(save_path)
     return
+
+
+def get_multi_matrices(keywords:list[str], company_names:list[str], matrix:pd.DataFrame, corpus_list:list[list[str]])->list[pd.DataFrame]:
+    
+    matrices = []
+    for corpus in corpus_list:
+        count_result = count_co_occur(keywords, company_names, matrix, corpus)
+        matrices.append(count_result.copy())    # use .copy() to avoid mutablity of count_result within loop
+
+    return matrices

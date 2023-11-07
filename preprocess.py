@@ -163,12 +163,31 @@ def save_sentences(cut_sentences:list[str], cut_sentences_path=os.environ.get('c
 
 # not tested
 def load_saved_preprocessed_corpus(path):
-    '''加载保存的分词后的分段或者分句语料，逐行读取到列表，去除单个换行符元素'''
+    '''加载保存的分词后的分段或者分句语料(a single txt file)，逐行读取到列表，去除单个换行符元素'''
     corpus = []
     with open(path, "r", encoding="utf-8") as f:
         corpus = f.readlines()
         corpus = list(filter(notNewlineCharacter, corpus))
     return corpus
+
+def load_preprocessed_multi_corpus(folder_path=os.environ.get("cut_sentences_by_year_folder"))->list[list[str]]:
+    corpusByYear = []
+    txt_files = sorted([f for f in os.listdir(folder_path) if f.endswith(".txt")])
+
+    for filename in txt_files:
+        file_path = os.path.join(folder_path, filename)
+
+        with open(file_path, "r", encoding="utf-8") as f:
+            corpus = f.readlines()
+            corpus = list(filter(notNewlineCharacter, corpus))
+            corpusByYear.append(corpus)
+    return corpusByYear
+
+def getYearFromFilename(folder_path=os.environ.get("cut_sentences_by_year_folder"))->list[str]:
+    '''return years of corpus list according to names of txt files'''
+    filenames = sorted([f for f in os.listdir(folder_path) if f.endswith(".txt")])
+    years = [filename[:4] for filename in filenames]
+    return years
 
 def notNewlineCharacter(line):
     if line == "\n":

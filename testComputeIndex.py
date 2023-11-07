@@ -22,4 +22,22 @@ def testSum():
     print(sum_matrix)
     return
 
-testSum()
+def testGetIndex():
+    keywords = gm.load_words(keywords_path)
+    company_names = gm.load_words(company_names_path)
+    matrix = gm.init_matrix(keywords, company_names)
+    corpus_list = pr.load_preprocessed_multi_corpus()
+    matrices = gm.get_multi_matrices(keywords, company_names, matrix, corpus_list)
+    
+    # show count result
+    for m in matrices:
+        print(m)
+
+    years = pr.getYearFromFilename()
+    indexByYear = ci.getIndex(matrices, years, company_names)
+    print(indexByYear)
+    return
+
+
+# testSum()
+# testGetIndex()
