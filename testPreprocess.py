@@ -78,16 +78,17 @@ def testParagraphsByYear():
 
     # list of lists
     splittedDocsByYear = pr.split_docs_by_year(new_cleaned_docs_by_year)
-    cutSentencesByYear = []
+    cutParagraphsByYear = []
     
     for docs, save_path in zip(splittedDocsByYear, save_paths):
-        sentences = pr.split_into_sentences(docs)
-        cut_sentences = pr.cut(sentences)
-        cutSentencesByYear.append(cut_sentences)
+        paras = pr.split_into_paragraphs(docs)
+        cut_paras = pr.cut(paras)
+        cutParagraphsByYear.append(cut_paras)
 
         # save by year        
-        pr.save_sentences(cut_sentences, save_path)
+        pr.save_sentences(cut_paras, save_path)
 
 # testParagraphs()
 # testSentences()
 # testSentencesByYear()
+testParagraphsByYear()

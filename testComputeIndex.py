@@ -66,7 +66,7 @@ def testLoadExcel():
     # print(names)
     index_names = gm.getIndexNames(names)
     matrix = gm.init_matrix(keywords, index_names)
-    corpus_list = pr.load_preprocessed_multi_corpus()
+    corpus_list = pr.load_preprocessed_multi_corpus(folder_path=os.environ.get("cut_paragraphs_by_year_folder")) # use cut paragraphs corpus
     matrices = gm.count_multi_names_by_year(keywords, names, matrix, corpus_list)
     years = pr.getYearFromFilename()
     indexByYear = ci.getIndex(matrices, years, index_names)
@@ -84,8 +84,31 @@ def testLoadExcel():
     newIndices.to_excel(os.environ.get("save_indices"))
     return newIndices
 
+def testLoadExcelNOtWeighted():
+    keywords = gm.load_words(keywords_path)
+    names = gm.load_excel(names_excel)
+    # print(names)
+    index_names = gm.getIndexNames(names)
+    matrix = gm.init_matrix(keywords, index_names)
+
+    # choose 1 of 2 below
+    # corpus_list = pr.load_preprocessed_multi_corpus(folder_path=os.environ.get("cut_paragraphs_by_year_folder")) # use cut paragraphs corpus
+    corpus_list = pr.load_preprocessed_multi_corpus(folder_path=os.environ.get("cut_sentences_by_year_folder")) # use cut sentences corpus
+
+    matrices = gm.count_multi_names_by_year(keywords, names, matrix, corpus_list)
+
+    years = pr.getYearFromFilename()
+    indexByYear = ci.getIndex(matrices, years, index_names)
+
+    # drop columns contain zeros only
+    indexByYear = ci.dropZeros(indexByYear)
+    # print(indexByYear)
+    print(indexByYear)
+    indexByYear.to_excel(os.environ.get("save_indices"))
+    return indexByYear
+
 
 # testSum()
 # testGetIndex()
 # testDivide()
-testLoadExcel()
+testLoadExcelNOtWeighted()
