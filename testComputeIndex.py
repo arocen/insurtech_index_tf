@@ -9,6 +9,7 @@ keywords_path = os.environ.get("keywords_path")
 company_names_path = os.environ.get("company_names_path")
 matrix_save_path = os.environ.get("matrix_save_path")
 cut_sentences_path = os.environ.get("cut_sentences_path")
+names_excel = os.environ.get("comnpany_names_excel")
 
 load_dotenv()
 
@@ -46,6 +47,9 @@ def testDivide():
     matrices = gm.get_multi_matrices(keywords, company_names, matrix, corpus_list)
     years = pr.getYearFromFilename()
     indexByYear = ci.getIndex(matrices, years, company_names)
+
+    # drop columns contain zeros only
+    indexByYear = ci.dropZeros(indexByYear)
     print(indexByYear)
 
     countWords = ci.countWords(corpus_list, years)
@@ -56,7 +60,32 @@ def testDivide():
     print(newIndices)
     return newIndices
 
+def testLoadExcel():
+    keywords = gm.load_words(keywords_path)
+    names = gm.load_excel(names_excel)
+    # print(names)
+    index_names = gm.getIndexNames(names)
+    matrix = gm.init_matrix(keywords, index_names)
+    corpus_list = pr.load_preprocessed_multi_corpus()
+    matrices = gm.count_multi_names_by_year(keywords, names, matrix, corpus_list)
+    years = pr.getYearFromFilename()
+    indexByYear = ci.getIndex(matrices, years, index_names)
+
+    # drop columns contain zeros only
+    indexByYear = ci.dropZeros(indexByYear)
+    # print(indexByYear)
+
+    countWords = ci.countWords(corpus_list, years)
+    # print(countWords)
+    weights = ci.weightFromCountWords(countWords)
+    # print(weights)
+    newIndices = ci.divideByWordNum(indexByYear, weights)
+    print(newIndices)
+    newIndices.to_excel(os.environ.get("save_indices"))
+    return newIndices
+
 
 # testSum()
 # testGetIndex()
-testDivide()
+# testDivide()
+testLoadExcel()

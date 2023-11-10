@@ -11,4 +11,3 @@ def drawCurves(indices:pd.DataFrame):
     plot = indices.plot(title="保险科技指标")
     plt.show()
     return
-

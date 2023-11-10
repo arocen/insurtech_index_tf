@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 import re
 import jieba
+import pandas as pd
 
 # load .env file
 load_dotenv()
@@ -28,6 +29,7 @@ def load_doc(doc_folder_path:str=os.environ.get('doc_folder_path'))->list[str]:
             docs_by_year.append(content)
 
     return docs_by_year
+
 
 
 def load_uselessText(uselessText_path:str=os.environ.get("uselessText_path"))->list[str]:
@@ -130,9 +132,21 @@ def split_into_paragraphs(splitted_docs:list[str])->list[str]:
         para_list.extend(paras_drop_empty)
     return para_list
 
+def extract_dict_from_excel(path:str=os.environ.get("comnpany_names_excel"), save_path=os.environ.get("dict_from_excel")):
+    '''从Excel文件加载公司名，保存为jieba可以直接读取的plain text'''
+    df = pd.read_excel(path, sheet_name="财险公司", usecols="B")
+    names = df.values.tolist()
+    names = [name[0].split(" ") for name in names]
+    with open(save_path, "w", encoding="utf-8") as f:
+        for company in names:
+            for name in company:
+                f.write(name + "\n")
+    
+    return
 
 
-def cut(sentences:list[str], my_dict_path:str=os.environ.get('my_dict_path'))->list[str]:
+
+def cut(sentences:list[str], my_dict_path:str=os.environ.get('dict_from_excel'))->list[str]:
     '''
     将列表中的句子切分为词语，返回列表, 列表中每一个元素为一个分词后的句子
 
@@ -197,3 +211,4 @@ def notNewlineCharacter(line):
 # test_load_uselessText()
 # slist = test_split_into_sentences()
 # print(cut(slist))
+# extract_dict_from_excel()

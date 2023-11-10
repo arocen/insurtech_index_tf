@@ -38,13 +38,14 @@ def weightFromCountWords(countWords:pd.Series)->pd.Series:
 
 def divideByWordNum(indices:pd.DataFrame, countWords:pd.Series)->pd.DataFrame:
     '''divide indices by word number in countWords'''
-    # clist = countWords.to_list()
+
     indices = indices.astype(int)
     print(indices.dtypes)
-    # for column in indices:
-    #     indices[column] = indices[column].div(countWords, axis=0)
-    indices = indices.div(countWords, axis=0)
+    indices = indices.div(countWords, axis=0)    # index(row labels) must be same
     
     return indices
 
-# Is it reasonable to divide index per year by total number of terms?
+def dropZeros(indices:pd.DataFrame)->pd.DataFrame:
+    '''Drop columns that contain zeros only'''
+    indices = indices.loc[:, (indices != 0).any(axis=0)]
+    return indices
