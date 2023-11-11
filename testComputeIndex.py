@@ -11,6 +11,8 @@ company_names_path = os.environ.get("company_names_path")
 matrix_save_path = os.environ.get("matrix_save_path")
 cut_sentences_path = os.environ.get("cut_sentences_path")
 names_excel = os.environ.get("comnpany_names_excel")
+test_doc_folder_path = os.environ.get(os.environ.get("test_doc_folder_path"))
+test_save_index=os.environ.get(os.environ.get("test_save_index"))
 
 load_dotenv()
 
@@ -112,16 +114,26 @@ def testExtraKeywords():
     keywords = gm.load_words(keywords_path)
     keywords2 = gm.load_words(keywords_path2)
     keywords = list(set(keywords + keywords2))
+    # num_words = len(keywords)
+    # print(num_words)
 
     names = gm.load_excel(names_excel)
     # print(names)
     index_names = gm.getIndexNames(names)
     matrix = gm.init_matrix(keywords, index_names)
     corpus_list = pr.load_preprocessed_multi_corpus(folder_path=os.environ.get("cut_sentences_by_year_folder")) # use cut sentences corpus
-
+    # corpus_list = pr.load_preprocessed_multi_corpus(test_doc_folder_path)    # use 1 year corpus to test
     matrices = gm.count_multi_names_by_year(keywords, names, matrix, corpus_list)
 
+    print(len(matrices))
     years = pr.getYearFromFilename()
+
+    # save per year data
+    # writer = pd.ExcelWriter(os.environ.get("test_save_index"), engine='xlsxwriter')
+    # for df, year in zip(matrices, years):
+    #     df.to_excel(writer, sheet_name=year)
+
+
     indexByYear = ci.getIndex(matrices, years, index_names)
 
     # drop columns contain zeros only
@@ -129,6 +141,7 @@ def testExtraKeywords():
     # print(indexByYear)
     print(indexByYear)
     indexByYear.to_excel(os.environ.get("save_indices"))
+    # indexByYear.to_excel(os.environ.get("test_save_index")) # save test result
     return indexByYear
 
 

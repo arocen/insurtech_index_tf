@@ -23,6 +23,7 @@ def load_excel(path:str)->list[list[str]]:
     df = pd.read_excel(path, sheet_name="财险公司", usecols="B")
     names = df.values.tolist()
     names = [name[0].split(" ") for name in names]
+    names = [[name.strip() for name in company]for company in names] # use .strip() to eliminates the whitespace on both sides of the string
     return names
 
 def getIndexNames(names:list[list[str]])->list:
@@ -69,20 +70,43 @@ def count_multi_names(keywords:list[str], names:list[list[str]], matrix:pd.DataF
                         if keyword in wlist:
                             count = wlist.count(keyword)
                             matrix.at[keyword, index_name] += count
-                        else:
-                            continue
-                else:
-                    continue
     
+    return matrix
+
+def new_count_multi_names(keywords: list[str], names: list[list[str]], matrix: pd.DataFrame, corpus: list[str]) -> pd.DataFrame:
+    # Initialize matrix with zeros for all keyword-company pairs
+    for keyword in keywords:
+        for company in names:
+            index_name = company[0]
+            matrix.at[keyword, index_name] = 0
+
+    # Loop over each text in the corpus
+    for text in corpus:
+        wlist = text.split(" ")
+
+        for company in names:
+            index_name = company[0]
+            for name in company:
+                if name in wlist and name != "":
+                    for keyword in keywords:
+                        if keyword in wlist:
+                            count = wlist.count(keyword)
+                            matrix.at[keyword, index_name] += count
+                            # debug
+                            # if index_name in ["华农财险", "深圳比亚迪财险", "阳光信用财险"]:
+                            #     print("wlist:", wlist)
+                            #     print("公司对应名称:", name)
+                            #     print("matches:", index_name, name, keyword)
+
     return matrix
 
 def count_multi_names_by_year(keywords:list[str], names:list[list[str]], matrix:pd.DataFrame,  corpus_list:list[list[str]])->list[pd.DataFrame]:
     matrices = []
-    index_names = getIndexNames(names)
+    # index_names = getIndexNames(names)
     for corpus in corpus_list:
-        count_result = count_multi_names(keywords, names, matrix, corpus)
+        count_result = new_count_multi_names(keywords, names, matrix, corpus)
         matrices.append(count_result.copy())    # use .copy() to avoid mutablity of count_result within loop
-        matrix = init_matrix(keywords, index_names) # reset count of matrix to zero
+        # matrix = init_matrix(keywords, index_names) # reset count of matrix to zero
     return matrices
 
 def save_matrix(matrix:pd.DataFrame, save_path:str):

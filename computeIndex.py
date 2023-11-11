@@ -1,10 +1,10 @@
 # compute index per year per company based on matrix
 import pandas as pd
 
-def sumTfPerCompany(matrix:pd.DataFrame)->pd.DataFrame:
+def sumTfPerCompany(matrix:pd.DataFrame)->pd.Series:
     '''sum term frequencies per company'''
-    matrix.loc['total'] = matrix.sum(numeric_only=True, axis=0) # axis=0 means sum all rows in each column
-    return matrix.loc['total']
+    total = matrix.sum(numeric_only=True, axis=0) # axis=0 means sum all rows in each column
+    return total
 
 
 # get per year data
