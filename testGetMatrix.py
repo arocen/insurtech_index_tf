@@ -8,6 +8,7 @@ import os
 load_dotenv()
 
 keywords_path = os.environ.get("keywords_path")
+keywords_path2 = os.environ.get("keywords_path2")
 company_names_path = os.environ.get("company_names_path")
 matrix_save_path = os.environ.get("matrix_save_path")
 cut_sentences_path = os.environ.get("cut_sentences_path")
@@ -36,6 +37,7 @@ def test_count_co_occur():
     result = gm.count_co_occur(keywords, company_names, matrix, corpus, matrix_save_path)
     print(result)
     return result
+
 
 # test_load_words()
 # test_init_matrix()

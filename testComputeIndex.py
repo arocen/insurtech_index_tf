@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 
 keywords_path = os.environ.get("keywords_path")
+keywords_path2 = os.environ.get("keywords_path2")
 company_names_path = os.environ.get("company_names_path")
 matrix_save_path = os.environ.get("matrix_save_path")
 cut_sentences_path = os.environ.get("cut_sentences_path")
@@ -107,8 +108,32 @@ def testLoadExcelNOtWeighted():
     indexByYear.to_excel(os.environ.get("save_indices"))
     return indexByYear
 
+def testExtraKeywords():
+    keywords = gm.load_words(keywords_path)
+    keywords2 = gm.load_words(keywords_path2)
+    keywords = list(set(keywords + keywords2))
+
+    names = gm.load_excel(names_excel)
+    # print(names)
+    index_names = gm.getIndexNames(names)
+    matrix = gm.init_matrix(keywords, index_names)
+    corpus_list = pr.load_preprocessed_multi_corpus(folder_path=os.environ.get("cut_sentences_by_year_folder")) # use cut sentences corpus
+
+    matrices = gm.count_multi_names_by_year(keywords, names, matrix, corpus_list)
+
+    years = pr.getYearFromFilename()
+    indexByYear = ci.getIndex(matrices, years, index_names)
+
+    # drop columns contain zeros only
+    indexByYear = ci.dropZeros(indexByYear)
+    # print(indexByYear)
+    print(indexByYear)
+    indexByYear.to_excel(os.environ.get("save_indices"))
+    return indexByYear
+
+
 
 # testSum()
 # testGetIndex()
 # testDivide()
-testLoadExcelNOtWeighted()
+testExtraKeywords()
