@@ -93,10 +93,10 @@ def new_count_multi_names(keywords: list[str], names: list[list[str]], matrix: p
                             count = wlist.count(keyword)
                             matrix.at[keyword, index_name] += count
                             # debug
-                            # if index_name in ["华农财险", "深圳比亚迪财险", "阳光信用财险"]:
-                            #     print("wlist:", wlist)
-                            #     print("公司对应名称:", name)
-                            #     print("matches:", index_name, name, keyword)
+                            if index_name in ["安邦财险", " 安邦保险", " 安邦财保", " ABCI", "安邦", "安邦财险股份有限公司"]:
+                                print("wlist:", wlist)
+                                print("公司对应名称:", name)
+                                print("matches:", index_name, name, keyword)
 
     return matrix
 

@@ -137,8 +137,8 @@ def testExtraKeywords():
     indexByYear = ci.getIndex(matrices, years, index_names)
 
     # drop columns contain zeros only
-    indexByYear = ci.dropZeros(indexByYear)
-    # print(indexByYear)
+    # indexByYear = ci.dropZeros(indexByYear)
+
     print(indexByYear)
     indexByYear.to_excel(os.environ.get("save_indices"))
     # indexByYear.to_excel(os.environ.get("test_save_index")) # save test result
