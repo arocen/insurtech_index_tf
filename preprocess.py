@@ -134,11 +134,14 @@ def split_into_paragraphs(splitted_docs:list[str])->list[str]:
 
 def extract_dict_from_excel(path:str=os.environ.get("comnpany_names_excel"), save_path=os.environ.get("dict_from_excel")):
     '''从Excel文件加载公司名，保存为jieba可以直接读取的plain text'''
-    df = pd.read_excel(path, sheet_name="财险公司", usecols="B")
-    names = df.values.tolist()
-    names = [name[0].split(" ") for name in names]
+    
+    # 寿险
+    df2 = pd.read_excel(path, sheet_name="寿险公司", usecols="D")
+    Lnames = df2.values.tolist()
+    Lnames = list(set([name[0].split(" ") for name in Lnames])) # 用set去重
+
     with open(save_path, "w", encoding="utf-8") as f:
-        for company in names:
+        for company in Lnames:
             for name in company:
                 f.write(name + "\n")
     

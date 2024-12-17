@@ -67,12 +67,18 @@ def testSentencesByYear():
         pr.save_sentences(cut_sentences, save_path)
 
 def testParagraphsByYear():
+    # 加载各年度文档
     docs_by_year = pr.load_doc()
     filenames = sorted([f for f in os.listdir(doc_folder_path) if f.endswith(".txt")])
+
+    # 根据文件名获取年份
     years = [filename[:4] for filename in filenames]
     save_names = [year + "_cut.txt" for year in years]
+
+    # 将各年度文档切分为段落
     save_paths = [os.path.join(cut_paragraphs_by_year_folder, save_name) for save_name in save_names]
     
+    # 去除慧科附带的各种无关字段
     cleaned_docs_by_year = pr.remove_nonsense(docs_by_year)
     new_cleaned_docs_by_year = pr.remove_href(cleaned_docs_by_year)
 
@@ -80,12 +86,13 @@ def testParagraphsByYear():
     splittedDocsByYear = pr.split_docs_by_year(new_cleaned_docs_by_year)
     cutParagraphsByYear = []
     
+    # 保存
     for docs, save_path in zip(splittedDocsByYear, save_paths):
         paras = pr.split_into_paragraphs(docs)
         cut_paras = pr.cut(paras)
         cutParagraphsByYear.append(cut_paras)
 
-        # save by year        
+        # save by year
         pr.save_sentences(cut_paras, save_path)
 
 # testParagraphs()
