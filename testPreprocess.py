@@ -71,7 +71,7 @@ def testParagraphsByYear():
     docs_by_year = pr.load_doc()
     filenames = sorted([f for f in os.listdir(doc_folder_path) if f.endswith(".txt")])
 
-    # 根据文件名获取年份
+     # 根据文件名获取年份
     years = [filename[:4] for filename in filenames]
     save_names = [year + "_cut.txt" for year in years]
 
