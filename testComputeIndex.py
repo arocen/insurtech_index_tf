@@ -111,17 +111,24 @@ def testLoadExcelNOtWeighted():
     return indexByYear
 
 def testExtraKeywords():
-    keywords = gm.load_words(keywords_path)
-    keywords2 = gm.load_words(keywords_path2)
-    keywords = list(set(keywords + keywords2))
+    keywords = list(set(gm.load_words(keywords_path)))
+    # print(keywords)
+    # keywords2 = gm.load_words(keywords_path2)
+    # keywords = list(set(keywords + keywords2))
     # num_words = len(keywords)
     # print(num_words)
 
     names = gm.load_excel(names_excel)
     # print(names)
     index_names = gm.getIndexNames(names)
+    
+    # with open('./assets/company_names.txt', 'w', encoding='utf-8') as f:
+    #     for name in index_names:
+    #         f.write(name + '\n')
+
     matrix = gm.init_matrix(keywords, index_names)
     corpus_list = pr.load_preprocessed_multi_corpus(folder_path=os.environ.get("cut_sentences_by_year_folder")) # use cut sentences corpus
+    # corpus_list = pr.load_preprocessed_multi_corpus(folder_path=os.environ.get("cut_paragraphs_by_year_folder"))
     # corpus_list = pr.load_preprocessed_multi_corpus(test_doc_folder_path)    # use 1 year corpus to test
     matrices = gm.count_multi_names_by_year(keywords, names, matrix, corpus_list)
 

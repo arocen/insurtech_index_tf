@@ -18,9 +18,9 @@ def load_words(path:str)->list:
 def load_excel(path:str)->list[list[str]]:
     '''
     读取公司名Excel文件
-    返回列表，每个元素为一个列表，包括同一公司的不同简称
+    返回列表，每个元素为一个列表，包括各个公司的多个简称
     '''
-    df = pd.read_excel(path, sheet_name="财险公司", usecols="B")
+    df = pd.read_excel(path, sheet_name="寿险公司", usecols="C")
     names = df.values.tolist()
     names = [name[0].split(" ") for name in names]
     names = [[name.strip() for name in company]for company in names] # use .strip() to eliminates the whitespace on both sides of the string

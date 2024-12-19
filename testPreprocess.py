@@ -97,5 +97,5 @@ def testParagraphsByYear():
 
 # testParagraphs()
 # testSentences()
-# testSentencesByYear()
-testParagraphsByYear()
+testSentencesByYear()
+# testParagraphsByYear()

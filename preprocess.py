@@ -136,14 +136,17 @@ def extract_dict_from_excel(path:str=os.environ.get("comnpany_names_excel"), sav
     '''从Excel文件加载公司名，保存为jieba可以直接读取的plain text'''
     
     # 寿险
-    df2 = pd.read_excel(path, sheet_name="寿险公司", usecols="D")
+    df2 = pd.read_excel(path, sheet_name="寿险公司", usecols="C")
     Lnames = df2.values.tolist()
-    Lnames = list(set([name[0].split(" ") for name in Lnames])) # 用set去重
+    # print(Lnames)
+    Lnames = [name[0].split(" ") for name in Lnames] # 用set去重
+    Lnames = list(set([name for inner_list in Lnames for name in inner_list if name]))
+    print(Lnames)
+    print(len(Lnames))
 
     with open(save_path, "w", encoding="utf-8") as f:
-        for company in Lnames:
-            for name in company:
-                f.write(name + "\n")
+        for name in Lnames:
+            f.write(name + "\n")
     
     return
 
